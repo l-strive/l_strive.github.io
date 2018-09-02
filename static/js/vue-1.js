@@ -20,7 +20,7 @@ var app3=new Vue({
 });
 
 var app4=new Vue({
-    el:'#app',
+    el:'#app4',
     data:{
         todos:[
             {text:"学习Javascript"},
