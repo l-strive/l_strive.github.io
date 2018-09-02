@@ -18,3 +18,14 @@ var app3=new Vue({
         seen:true
     }
 });
+
+var app4=new Vue({
+    el:"#app4",
+    data:{
+        todos:[
+            {text:"学习Javascript"},
+            {text:"学习Vue"},
+            {text:"做个好项目"},
+        ]
+    }
+});

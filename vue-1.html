@@ -20,6 +20,14 @@
 	<p v-if="seen">你可以看到我了</p>
 </div>
 
+<div id="app4">
+	<ul>
+		<li v-for="todo in todos">
+			{{todo.text}}
+		</li>
+	</ul>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="static/js/vue-1.js"></script>
 </body>
