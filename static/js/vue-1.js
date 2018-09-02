@@ -20,12 +20,12 @@ var app3=new Vue({
 });
 
 var app4=new Vue({
-    el:"#app4",
+    el:'#app',
     data:{
         todos:[
             {text:"学习Javascript"},
             {text:"学习Vue"},
-            {text:"做个好项目"},
+            {text:"做个好项目"}
         ]
     }
 });
