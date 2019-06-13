@@ -21,7 +21,7 @@ export default {
 
 <style scoped>
   ul{ list-style: none;}
-  #nav{ height: 40px; line-height: 40px;}
-  #nav ul{ display: flex; height: 40px;}
+  #nav{ height: 1rem; line-height: 1rem; text-align: center; font-size:0.35rem;}
+  #nav ul{ display: flex; height: 1rem;}
   #nav ul li{ flex:1;}
 </style>

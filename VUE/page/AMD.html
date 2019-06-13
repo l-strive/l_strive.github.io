@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AMD模块概念理解</title>
+    <link rel="stylesheet" href="../../public/static/css/reset_5.css">
+    <script src="../../public/static/js/rem.js"></script>
+    <script src="../lib/vue.js"></script>
+    <script src="../lib/require.js"></script>
+    <script>
+        //通过对象封装方法，可见可被修改。
+        var oG={
+            v1:1,
+            v2:2,
+            f1:function(_a){
+                var v3=100;
+                return _a+1+this.v1;
+            },
+
+        }
+        var oGA=(function(){
+            var v1=3;
+            var v2=4;
+            function f1(_a){
+                var v3=100;
+                return _a+10+v1;
+            }
+            return {
+                f1:f1
+            }
+        })();
+
+        console.log(oG)
+        console.log(oG.f1(1));
+        console.log(oGA)
+        console.log(oGA.f1(1));
+
+        // 加载模块
+        require(['../js/amd1.js'], function (){
+            console.log(oGB);
+            console.log(oGB.f1(1));
+        });
+    </script>
+</head>
+<body>
+</body>
+</html>
