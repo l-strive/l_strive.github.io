@@ -1,0 +1,5 @@
+指令：(v-)
+    v-bind:title="message"      绑定属性值
+
+条件：
+    v-if="seen"                 判断元素是否显示
