@@ -9,12 +9,12 @@
     <script src="../../public/static/js/rem.js"></script>
     <script src="../lib/vue.js"></script>
     <style>
-        div{ background: #f1f1f1; margin: 0.3rem; padding:0.2rem;}
+        div.box{ background: #f1f1f1; margin: 0.3rem; padding:0.2rem;}
     </style>
 </head>
 <body>
 
-    <div id="app1">{{message}}</div>
+    <div class="box" id="app1">{{message}}</div>
     <script>
         var app1=new Vue({
             el:'#app1',
@@ -24,7 +24,7 @@
         });
     </script>
 
-    <div id="app2">
+    <div class="box" id="app2">
         <span v-bind:title="message">
             查看title内容
         </span>
@@ -40,7 +40,7 @@
         });
     </script>
 
-    <div id="app3">
+    <div class="box" id="app3">
         <span v-if="seen">是否能看到</span>
     </div>
     <script>
@@ -54,7 +54,99 @@
         });
     </script>
 
-    
+    <div class="box" id="app4">
+        <strong>循环一</strong>
+        <ul>
+            <li v-for="oName in names">{{oName.name}}</li>
+        </ul>
+        <strong>循环二</strong>
+        <ul>
+            <li v-for="(oName,index) in names">{{index+1+"、"+oName.name}}</li>
+        </ul>
+        <strong>循环三</strong>
+        <ul>
+            <li v-for="(oName,index) in oNames">{{index+1+"、"+oName.name}}</li>
+        </ul>
+    </div>
+    <script>
+        var app4=new Vue({
+            el:'#app4',
+            data() {
+                return {
+                    names:[
+                        {name:'name1'},
+                        {name:'name2'},
+                        {name:'name3'},
+                    ],
+                    oNames:{
+                        n1:{name:'name1'},
+                        n2:{name:'name2'},
+                        n3:{name:'name3'},
+                    }
+                }
+            },
+        });
+    </script>
+
+    <div class="box" id="app5">
+        <p>{{message}}</p>
+        <button v-on:click="fReverse">逆转消息</button>
+    </div>
+    <script>
+        var app5=new Vue({
+            el:'#app5',
+            data() {
+                return {
+                    message:'Hello'
+                }
+            },
+            methods: {
+                fReverse:function(){
+                    this.message=this.message.split('').reverse().join('');
+                }
+            },
+        });
+    </script>
+
+    <div class="box" id="app6">
+        <p>{{message}}</p>
+        <input type="text" v-model="message">
+    </div>
+    <script>
+        var app6=new Vue({
+           el:'#app6',
+           data() {
+               return {
+                   message:'Hello'
+               }
+           }, 
+        });
+    </script>
+
+<strong>组件化应用构建</strong>
+    <div class="box" id="app7">
+        <ul>
+            <tlis v-for="(book,index) in books" v-bind:lidata="book" v-bind:key="index"></tlis>
+        </ul>
+    </div>
+    <script>
+        Vue.component('tlis', {
+            props:['lidata'],
+            template:'<li>{{lidata.name}}</li>'
+        });
+        var app7=new Vue({
+           el:'#app7',
+           data() {
+               return {
+                   books:[
+                       {name:'book1'},
+                       {name:'book2'},
+                       {name:'book3'}
+                   ]
+               }
+           }, 
+        });
+    </script>
     
 </body>
 </html>

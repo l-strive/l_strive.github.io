@@ -1,5 +1,45 @@
+介绍===================================================================================================
+输出实例中的数据：
+    <div class="box" id="app1">{{message}}</div>
+声明VM实力：
+    var app1=new Vue({
+        el:'#app1',
+        data:{
+            message:'HELLO WORD'
+        }
+    });
+
 指令：(v-)
+绑定属性值：
     v-bind:title="message"      绑定属性值
 
 条件：
     v-if="seen"                 判断元素是否显示
+
+循环：
+    v-for="oName in names"          从数据names中获取对象为oName
+    v-for="(oName,index) in names"  从数据names中获取对象为oName，并且获取索引为index，支持获取对象的key。
+
+事件绑定：
+    v-on:click="funName"
+定义方法：
+    methods:{
+        funName:function(){
+            console.log(this.message);
+        }
+    }
+
+表单绑定数据：
+    <input type="text" v-model="message">   input的value值，绑定给vm实力的数据。
+
+
+组件化应用构建：
+    声明组件：【注意：组件名称、数据名称都需要是小写，大写不识别】【需要补充说明】
+    Vue.component('tlis', {
+        props:['lidata'],
+        template:'<li>{{lidata.name}}</li>'
+    });
+    组件使用：【同html标签一样用法，只是需要增加绑定数据属性lidata和key，lidata同声明中的props接收名称】
+    <tlis v-for="(book,index) in books" v-bind:lidata="book" v-bind:key="index"></tlis>
+
+VUE实例===================================================================================================
