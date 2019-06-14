@@ -14,6 +14,39 @@
 </head>
 <body>
 
+    <strong>Object.freeze()     冻结对象，被冻结的data属性响应系统无法再追踪变化。</strong>
+    <div class="box" id="app1">
+        <p>{{obj.foo}}</p>
+        <button v-on:click="obj.foo='baz'">change it</button>
+        <p>{{obj2.foo}}</p>
+        <button v-on:click="obj2.foo='baz2'">change it</button>
+    </div>
+    <script>
+        var obj={
+            foo:'bar'
+        }
+        var obj2={
+            foo:'bar2'
+        }
+        Object.freeze(obj);
+        var vm= new Vue({
+           el:'#app1',
+           data() {
+               return {
+                   obj:obj,
+                   obj2:obj2
+               }
+           },
+        });
+        //实例的属性与方法
+        console.log('vm.$data下的obj是否全等于全局的obj'+(vm.$data.obj===obj));
+        console.log('vm.$el是否全等于网页中ID为app1的元素对象'+(vm.$el === document.getElementById('app1')));
+        vm.$watch('obj2.foo',function(_new,_old){
+            console.log('old:'+_old);
+            console.log('new:'+_new);
+        });
+    </script>
+
     
     
 </body>
