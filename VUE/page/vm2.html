@@ -15,7 +15,7 @@
 <body>
 
     <strong>Object.freeze()     冻结对象，被冻结的data属性响应系统无法再追踪变化。</strong>
-    <div class="box" id="app1">
+    <div class="box" id="vm1">
         <p>{{obj.foo}}</p>
         <button v-on:click="obj.foo='baz'">change it</button>
         <p>{{obj2.foo}}</p>
@@ -29,8 +29,8 @@
             foo:'bar2'
         }
         Object.freeze(obj);
-        var vm= new Vue({
-           el:'#app1',
+        var vm1= new Vue({
+           el:'#vm1',
            data() {
                return {
                    obj:obj,
@@ -39,13 +39,33 @@
            },
         });
         //实例的属性与方法
-        console.log('vm.$data下的obj是否全等于全局的obj'+(vm.$data.obj===obj));
-        console.log('vm.$el是否全等于网页中ID为app1的元素对象'+(vm.$el === document.getElementById('app1')));
-        vm.$watch('obj2.foo',function(_new,_old){
+        console.log('vm1.$data下的obj是否全等于全局的obj'+(vm1.$data.obj===obj));
+        console.log('vm1.$el是否全等于网页中ID为vm1的元素对象'+(vm1.$el === document.getElementById('vm1')));
+        vm1.$watch('obj2.foo',function(_new,_old){
             console.log('old:'+_old);
             console.log('new:'+_new);
         });
         
+    </script>
+
+    <strong>生命周期</strong>
+    <div class="box" id="vm2">
+        a is {{a}}
+    </div>
+    <script>
+        var vm2= new Vue({
+            el:'#vm2',
+            data() {
+                return {
+                    a:1
+                }
+            },
+            created() {
+                // this 指向 vm 实例
+                console.log('a is '+this.a);
+
+            },
+        });
     </script>
 
     
