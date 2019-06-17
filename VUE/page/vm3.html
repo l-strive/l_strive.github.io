@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BM</title>
+    <link rel="stylesheet" href="../../public/static/css/reset_5.css">
+    <script src="../../public/static/js/rem.js"></script>
+    <script src="../lib/vue.js"></script>
+    <style>
+        div.box{ background: #f1f1f1; margin: 0.3rem; padding:0.2rem;}
+        div.box i{ font-style: italic; color: #990;}
+    </style>
+</head>
+<body>
+    <strong>模板语法</strong>
+    <strong>插值</strong>
+    <div class="box" id="vm1">
+        <i>数据绑定最常见的形式就是使用“Mustache”语法 (双大括号) 的文本插值</i>
+        <p>{{msg1}}</p>
+        <i>通过使用v-once指令，执行一次性地插值，注意会影响该节点上其他的数据绑定</i>
+        <p v-once>内容不改变：{{msg1}}</p>
+        <p>=====================</p>
+        <i>双大括号会将数据解释为普通文本，如果想插入html代码，需要在要插入的标签上使用v-html</i>
+        <p>{{html1}}</p>
+        <p v-html="html1"></p>
+        <p>=====================</p>
+        <i>双大括号语法不能作用在HTML属性上，遇到这种情况应该使用v-bind指令</i>
+        <p v-bind:id="pidvalue">ID绑定</p>
+        <i>对于布尔值的属性，值为null/underfined/false，则都为false</i>
+        <p><input type="text" v-bind:disabled="inputdisable"></p>
+        <p>=====================</p>
+        <i>vue给双大括号提供了完全的js表达式支持</i>
+        <p>{{num1+1}}</p>
+        <p>{{ok?'YES':'NO'}}</p>
+        <p>{{html1.split('').reverse().join('')}}</p>
+        <p v-bind:id="'id_'+pidvalue">id计算</p>
+    </div>
+    <script>
+        var vm1 = new Vue({
+           el:'#vm1',
+           data() {
+               return {
+                   msg1:'信息1',
+                   html1:'<span style="color:red">html内容1</span>',
+                   pidvalue:'pid1',
+                   inputdisable:true,
+                   num1:10,
+                   ok:true,
+               }
+           }, 
+        });
+    </script>
+
+    <strong>指令</strong>
+    <div class="box" id="vm2">
+
+    </div>
+    <script>
+        var vm2 = new Vue({
+           el:'#vm2',
+           data() {
+               return {
+                   
+               }
+           }, 
+        });
+    </script>
+
+</body>
+</html>
