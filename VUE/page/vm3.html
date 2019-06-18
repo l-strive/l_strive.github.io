@@ -8,10 +8,7 @@
     <link rel="stylesheet" href="../../public/static/css/reset_5.css">
     <script src="../../public/static/js/rem.js"></script>
     <script src="../lib/vue.js"></script>
-    <style>
-        div.box{ background: #f1f1f1; margin: 0.3rem; padding:0.2rem;}
-        div.box i{ font-style: italic; color: #990;}
-    </style>
+    <link rel="stylesheet" href="../css/common.css">
 </head>
 <body>
     <strong>模板语法</strong>
@@ -55,18 +52,61 @@
 
     <strong>指令</strong>
     <div class="box" id="vm2">
-
+        <i>v-if判断是否显示，如果不显示，则不输出标签</i>
+        <p v-if="seen">判断是否显示</p>
+        <i>一些指令能够接收一个参数，在指令名称之后以冒号表示。</i>
+        <p><a v-bind:href="url1">绑定链接</a></p>
+        <i>v-on指令，监听DOM事件</i>
+        <p v-on:click="click1">绑定事件</p>
+        <i>动态参数</i>
+        <i>绑定属性和事件时，属性和事件名称可以通过[value]形式动态绑定</i>
+        <i>HTML特性名attrname中不能有空格和引号，在 DOM 中使用模板时你需要回避大写键名，浏览器会把大写转化为小写。</i>
+        <p><a v-bind:[attrname]="url1">href=url1或者data-href=url1</a></p>
+        
     </div>
     <script>
         var vm2 = new Vue({
            el:'#vm2',
            data() {
                return {
-                   
+                   seen:false,
+                   url1:'www.baidu.com',
+                   attrname:'href',
                }
-           }, 
+           },
+           methods:{
+               click1:function(){
+                   alert(this.url1);
+               }
+           }
         });
     </script>
+
+    <strong>缩写</strong>
+    <div class="box" id="vm3">
+        <i>v-bind缩写</i>
+        <p><a v-bind:href="url1">v-bind:href</a></p>
+        <p><a :href="url1">:href</a></p>
+        <i>v-on缩写</i>
+        <p v-on:click="click1">v-on:click</p>
+        <p @click="click1">@click</p>
+    </div>
+    <script>
+        var vm3 = new Vue({
+            el:'#vm3',
+            data() {
+                return {
+                    url1:'www.baidu.com'
+                }
+            },
+            methods: {
+                click1:function(){
+                    alert(this.url1);
+                }
+            },
+        });
+    </script>
+    
 
 </body>
 </html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BM</title>
+    <link rel="stylesheet" href="../../public/static/css/reset_5.css">
+    <script src="../../public/static/js/rem.js"></script>
+    <script src="../lib/vue.js"></script>
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <strong>计算属性和侦听器</strong>
+    <strong>计算属性</strong>
+    <div class="box" id="vm1">
+        <i>对于任何复杂逻辑，你都应当使用计算属性。例如翻转字符串。</i>
+        <p>Original message:"{{msg}}"</p>
+        <p>Computed reversed message:"{{reversedMsg}}"</p>
+        <i>【总结】计算属性，相当于一个data数据，定义的计算属性名称，会在实例上转化为值。</i>
+    </div>
+    <script>
+        var vm1 = new Vue({
+           el:'#vm1',
+           data() {
+               return {
+                   msg:'msg内容'
+               }
+           }, 
+           computed: {
+                reversedMsg:function(){
+                    return this.msg.split('').reverse().join('');
+                },
+           },
+        });
+    </script>
+
+    <strong>计算属性VS侦听属性</strong>
+    <div class="box" id="vm2">
+        <i>第一个使用的watch侦听变化，第二个使用的计算属性自动响应。【最好使用计算属性实现】</i>
+        <p>{{fullName1}}</p>
+        <p>{{fullName2}}</p>
+    </div>
+    <script>
+        var vm2 = new Vue({
+            el:'#vm2',
+            data() {
+                return {
+                    firstName1:'L',
+                    lastName1:'JG',
+                    fullName1:'L JG',
+                    firstName2:'L',
+                    lastName2:'JG',
+                }
+            }, 
+            watch: {
+                firstName1:function(val){
+                    this.fullName1=val+' '+this.lastName1;
+                },
+                lastName1:function(val){
+                    this.fullName1=this.firstName1+' '+val;
+                }
+            },
+            computed: {
+                fullName2:function(){
+                    return this.firstName2+' '+this.lastName2;
+                }
+            },
+        });
+    </script>
+
+    <strong>计算属性的setter</strong>
+    <div class="box" id="vm3">
+        <i>默认只有getter属性，并且fullName为function。</i>
+        <i>如果需要添加setter属性，需要给fullName分别设置get、set两个function。</i>
+        <i>【总结】getter/setter属性的定义：</i>
+        <i>计算属性含有getter和setter两个方法，默认为getter方法为计算属性本身。</i>
+        <i>getter：通过data数据变化响应更新计算属性的结果。</i>
+        <i>setter：计算属性的值，如果变化，会反向更新依赖data。</i>
+        <p>{{fullName}}</p>
+    </div>
+    <script>
+        var vm3 = new Vue({
+           el:'#vm3',
+           data() {
+               return {
+                   firstName:'L',
+                   lastName:'JG',
+               }
+           }, 
+           computed: {
+               fullName:{
+                   get:function(){
+                       return this.firstName+' '+this.lastName;
+                   },
+                   set:function(newValue){
+                        var aNames = newValue.split(' ');
+                        this.firstName = aNames[0];
+                        this.lastName = aNames[1];
+                   }
+               }
+           },
+        });
+    </script>
+
+    <strong>侦听器</strong>
+    <div class="box" id="vm4">
+        <p>
+            ask a yes/no question:
+            <input type="text" v-model="question">
+        </p>
+        <p>{{answer}}</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+    <script>
+        var vm4 = new Vue({
+            el:'#vm4',
+            data() {
+                return {
+                    question:'',
+                    answer:'I cannot give you an answer until you ask a question!'
+                }
+            },
+            watch: {
+                question:function(newQuestion,oldQuestion){
+                    console.log(newQuestion);
+                    this.answer='Waiting for you to stop typing...',
+                    this.debouncedGetAnswer();
+                }
+            },
+            created() {
+                //_.debounce    限制500毫秒请求一次 getAnswer。
+                this.debouncedGetAnswer = _.debounce(this.getAnswer,500);
+            },
+            methods: {
+                getAnswer:function(){
+                    //请求之前判断是否有？，如果没有的话不请求
+                    if(this.question.indexOf('?')===-1){
+                        this.answer='Questions usually contain a question mark.'
+                        return
+                    }
+                    this.answer = 'Thinking...';
+                    var vm=this;
+                    //下面接口随机返回yes/no
+                    axios.get('https://yesno.wtf/api')
+                        .then(function(response){
+                            vm.answer=_.capitalize(response.data.answer)
+                        })
+                        .catch(function(error){
+                            vm.answer='Error! could not reach the Api.'+error
+                        })
+                }
+            },
+        });
+    </script>
+
+
+</body>
+</html>

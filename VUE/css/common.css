@@ -1,0 +1,4 @@
+/* 学习过程样式 */
+strong{ display: block;}
+div.box{ background: #f1f1f1; margin: 0.3rem; padding:0.2rem;}
+div.box i{ display: block; font-style: italic; color: #990;}
