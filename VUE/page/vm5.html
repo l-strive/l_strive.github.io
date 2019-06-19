@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BM</title>
+    <link rel="stylesheet" href="../../public/static/css/reset_5.css">
+    <script src="../../public/static/js/rem.js"></script>
+    <script src="../lib/vue.js"></script>
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <strong>Class和Style绑定</strong>
+    <div class="box" id="vm1">
+        <i>通过对象绑定多个calss，绑定的class其实为字符串，可以写成不带引号的形式，当有特殊符号存在程序逻辑是必须加上引号标识为字符串</i>
+        <p class="static" v-bind:class="{active:isActive,'text-danger':hasError}">是否激活</p>
+        <i>可以通过data对象来输出class</i>
+        <p :class="classObject1">data对象-classObject1</p>
+        <i>通过计算属性返回class对象</i>
+        <p :class="classObject2">计算属性-classObject2</p>
+        <i>通过数组绑定多个class</i>
+        <p :class="['active','error']">通过[]绑定class字符串</p>
+        <i>利用[]计算能力获取class的值,【响应式变更class值】</i>
+        <p :class="[activeClass,errorClass]">通过数组获取data值</p>
+        <i>通过[]计算属性，执行单行计算获取对应值</i>
+        <p :class="[isActive?activeClass:'',errorClass]">[]执行js语句</p>
+        <i>[]中同时也支持{}语法</i>
+        <p :class="[{active:isActive},errorClass]">[]中支持{}的写法</p>
+    </div>
+    <script>
+        var vm1 = new Vue({
+            el:'#vm1',
+            data() {
+                return {
+                    isActive:true,
+                    hasError:true,
+                    classObject1:{
+                        active:true,
+                        'text-danger':true
+                    },
+                    activeClass:'active',
+                    errorClass:'text-danger',
+                }
+            },
+            computed: {
+                classObject2:function(){
+                    return{
+                        active:this.isActive&&!this.hasError,
+                        'text-danger':this.hasError
+                    }
+                }
+            },
+        });
+    </script>
+
+    <strong>在组件上绑定class</strong>
+    <div class="box" id="vm2">
+        <i>注意定义组件时候ID为字符串</i>
+        <component1 :class="[activeClass]"></component1>
+    </div>
+    <script>
+        Vue.component('component1', {
+            template:'<p class="tClass1">Hello!</p>'
+        })
+        var vm2 = new Vue({
+            el:'#vm2',
+            data() {
+                return {
+                    activeClass:'active',
+                }
+            },
+        });
+    </script>
+
+    <strong>绑定内联样式</strong>
+    <div class="box" id="vm3">
+        <i>绑定内联样式,属性名称驼峰式写法代替中线。value有计算能力</i>
+        <p :style="{color:activeColor,fontSize:fontSize+'rem'}">绑定内联样式</p>
+        <i>绑定data对象</i>
+        <p :style="styleObject1">绑定data对象内联样式</p>
+        <i>数组语法将多个样式对象应用到同一个元素上</i>
+        <p style="background:#fff;" :style="[styleObject1,styleObject2]">数组应用多个样式对象</p>
+        <i>【总结1】绑定的style会跟标签的原有style合并</i>
+        <i>自动添加浏览器前缀</i>
+        <p :style="{transform:'rotate(180deg)'}">旋转</p>
+        <i>【总结2】写transform时候不用考虑多前缀写法，VUE会在需要添加前缀的浏览器中自动添加前缀。</i>
+        <i>多重值，只会渲染数组中最后一个被浏览器支持的值</i>
+        <p :style="{display:['-webkit-box','-ms-flexbox','flex']}">多重值绑定</p>
+    </div>
+    <script>
+        var vm3 = new Vue({
+            el:'#vm3',
+            data() {
+                return {
+                    activeColor:'#f00',
+                    fontSize:.4,
+                    styleObject1:{
+                        color:'#0f0',
+                        fontSize:'0.35rem',
+                    },
+                    styleObject2:{
+                        background:'#f1f1f1',
+                        color:'#00f',
+                        lineHeight:'0.5rem',
+                    }
+                }
+            },
+        });
+    </script>
+
+
+
+</body>
+</html>
