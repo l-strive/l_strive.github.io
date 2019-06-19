@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BM</title>
+    <link rel="stylesheet" href="../../public/static/css/reset_5.css">
+    <script src="../../public/static/js/rem.js"></script>
+    <script src="../lib/vue.js"></script>
+    <link rel="stylesheet" href="../css/common.css">
+
+</head>
+<body>
+    <strong>列表渲染</strong>
+    <strong>v-for把一个数组对应为一组元素</strong>
+    <div class="box" id="vm1">
+        <ul>
+            <li v-for="data in listData">
+                {{data.name}}
+            </li>
+        </ul>
+        <i>v-for中，可以访问所有父作用域的属性。支持可选的第二个参数，获取当前项的索引。</i>
+        <ul>
+            <li v-for="(data,index) in listData">
+                {{cate}}-{{index}}-{{data.name}}
+            </li>
+        </ul>
+        <i>使用of替代in，更接近迭代器的语法。</i>
+        <ul>
+            <li v-for="data of listData">
+                {{data.name}}
+            </li>
+        </ul>
+    </div>
+    <script>
+        var vm1 = new Vue({
+            el:"#vm1",
+            data() {
+                return {
+                    cate:'names',
+                    listData:[
+                        {name:'name1'},
+                        {name:'name2'},
+                    ]
+                }
+            },
+        });
+    </script>
+
+    <strong>v-for使用对象数据</strong>
+    <div class="box" id="vm2">
+        <ul>
+            <li v-for="value of listData">
+                {{value}}
+            </li>
+        </ul>
+        <i>使用第二个参数获取对象的属性名称</i>
+        <ul>
+            <li v-for="(value,name) in listData">
+                {{name}}：{{value}}
+            </li>
+        </ul>
+        <i>使用第三个参数获取索引</i>
+        <ul>
+            <li v-for="(value,name,index) in listData">
+                {{index}}.{{name}}:{{value}}
+            </li>
+        </ul>
+    </div>
+    <script>
+        var vm2 = new Vue({
+            el:"#vm2",
+            data() {
+                return {
+                    listData:{
+                        name1:'hello',
+                        name2:'word!',
+                    }
+                }
+            },
+        });
+    </script>
+
+</body>
+</html>
