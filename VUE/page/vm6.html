@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BM</title>
+    <link rel="stylesheet" href="../../public/static/css/reset_5.css">
+    <script src="../../public/static/js/rem.js"></script>
+    <script src="../lib/vue.js"></script>
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <strong>条件渲染</strong>
+    <div class="box" id="vm1">
+        <i>通过v-if判定为不显示的元素会从代码上小时，显示为&lt;!----&gt;</i>
+        <i>使用v-else显示v-if的else块</i>
+        <p v-if="isshow">如果isshow为truthy则显示</p>
+        <p v-else-if="isshow_tem">内容组显示了</p>
+        <p v-else>都没显示！不对我显示了。。。</p>
+        <i>用&lt;template&gt;包裹多个标签，使用v-if渲染分组</i>
+        <template v-if="isshow_tem">
+            <p>内容1</p>
+            <p>内容2</p>
+        </template>
+    </div>
+    <script>
+        var vm1 = new Vue({
+            el:'#vm1',
+            data() {
+                return {
+                    isshow:true,
+                    isshow_tem:true,
+                }
+            },
+        });
+    </script>
+
+    <strong>用key管理可复用的元素</strong>
+    <div class="box" id="vm2">
+        <i>1、VUE会复用已有元素而不是从头开始渲染，而且不会清除已输入内容。</i>
+        <template v-if="loginType === 'username'">
+            <label>username</label>
+            <input type="text" placeholder="enter your username">
+        </template>
+        <template v-else>
+            <label>email</label>
+            <input type="text" placeholder="enter your email address">
+        </template>
+        <i>2、如果不想让vue复用，需要给标签添加唯一的key属性</i>
+        <i>此处的label标签会被复用</i>
+        <template v-if="loginType === 'username'">
+            <label>username</label>
+            <input type="text" key="username" placeholder="enter your username">
+        </template>
+        <template v-else>
+            <label>email</label>
+            <input type="text" key="email" placeholder="enter your email address">
+        </template>
+        <i>【总结】如果设置的key属性值一样，则会被认为此两个元素复用。</i>
+    </div>
+    <script>
+        var vm2 = new Vue({
+            el:'#vm2',
+            data() {
+                return {
+                    loginType:'username'
+                }
+            },
+        });
+    </script>
+
+    <strong>v-show</strong>
+    <div class="box" id="vm3">
+        <i>v-show=false相当于display:none,v-show=true时，会清除display属性。</i>
+        <i>v-show不支持&lt;template&gt;元素，也不支持v-else</i>
+        <p v-show="isshow">是否显示</p>
+        <i>★v-if VS v-show</i>
+        <i>★v-if更高的切换开销，v-show有更高的初始渲染开销。如果需要频繁的切换，则使用v-show较好，如果很少改变则使用v-if较好。</i>
+    </div>
+    <script>
+        var vm3 = new Vue({
+            el:"#vm3",
+            data() {
+                return {
+                    isshow:true
+                }
+            },
+        });
+    </script>
+
+    <strong>v-if与v-for一起使用</strong>
+    <div class="box">
+        <i>不推荐一起使用</i>
+        <i>当一起使用时，v-for比v-if具有更高的优先级。</i>
+    </div>
+
+</body>
+</html>
