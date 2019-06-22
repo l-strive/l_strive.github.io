@@ -82,5 +82,34 @@
         });
     </script>
 
+    <strong>维护状态 key 的使用</strong>
+    <div class="box" id="vm3">
+        <ul class="cl">
+            <li v-for="item in items" :key="item.id">{{item.name}}</li>
+        </ul>
+        <p><input type="button" value="Vue.set()" @click="vueset"></p>
+    </div>
+    <script>
+        var vm3 = new Vue({
+            el:"#vm3",
+            data() {
+                return {
+                    items:[
+                        {id:1,name:"name1"},
+                        {id:2,name:"name2"},
+                        {id:3,name:"name3"},
+                        {id:4,name:"name4"},
+                        {id:5,name:"name5"},
+                    ]
+                }
+            },
+            methods: {
+                vueset:function(){
+                    Vue.set(vm3.items,2,{id:13,name:"name13"});
+                }
+            },
+        });
+    </script>
+
 </body>
 </html>
