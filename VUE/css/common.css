@@ -2,5 +2,5 @@
 strong{ display: block; line-height: 0.4rem;}
 div.box{ line-height:0.4rem;  background: #f1f1f1; margin: 0.3rem; padding:0.2rem;}
 div.box i{ color: rgb(71, 187, 255); display: block; font-style: italic;}
-
-
+div.tip{ line-height: 0.4rem; background: rgba(71, 187, 255,0.5); margin:0.3rem; padding:0.2rem;}
+div.tip pre{ white-space: pre-wrap;}
