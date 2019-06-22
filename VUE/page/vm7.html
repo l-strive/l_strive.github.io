@@ -87,7 +87,14 @@
         <ul class="cl">
             <li v-for="item in items" :key="item.id">{{item.name}}</li>
         </ul>
-        <p><input type="button" value="Vue.set()" @click="vueset"></p>
+        <i>Vue 不能检测以下数组的变动:</i>
+        <i>1.当你利用索引直接设置一个数组项时，例如：vm.items[indexOfItem] = newValue</i>
+        <i>2.当你修改数组的长度时，例如：vm.items.length = newLength</i>
+        <p><input type="button" @click="vm3items" value="vm3.items[2]={},无效,需要使用Vue.set()"></p>
+        <p><input type="button" @click="vueset" value="Vue.set()"></p>
+        <p><input type="button" @click="vmsplice" value="vm.items.splice()"></p>
+        <p><input type="button" @click="vm$set" value="vm.$set()"></p>
+        
     </div>
     <script>
         var vm3 = new Vue({
@@ -104,12 +111,76 @@
                 }
             },
             methods: {
+                vm3items:function(){
+                    vm3.items[2]={id:13,name:"name13"}
+                },
                 vueset:function(){
                     Vue.set(vm3.items,2,{id:13,name:"name13"});
+                },
+                vmsplice:function(){
+                    vm3.items.splice(2,1,{id:13,name:"name113"});
+                },
+                vm$set:function(){
+                    vm3.$set(vm3.items,2,{id:13,name:"name1113"});
                 }
             },
         });
     </script>
+
+    <strong>对象变更监测注意事项</strong>
+    <div class="box" id="vm4">
+        <ul class="cl">
+            <li v-for="item in items">{{item}}</li>
+        </ul>
+        <i>vm.b不是响应式的</i>
+        <p><input type="button" @click="vmItemsB" value="vm.items.b=2"></p>
+        <i>对于已经创建的实例，Vue 不允许动态添加根级别的响应式属性。</i>
+        <i>但是，可以使用 Vue.set(vm.items, 'propertyName', value) 方法向嵌套对象添加响应式属性。</i>
+        <p><input type="button" @click="Vueset" value="Vue.set()"></p>
+        <ul class="cl">
+            <li v-for="(value,name,index) in userProfile">{{index}}-{{name}}:{{value}}</li>
+        </ul>
+        <p><input type="button" @click="Vuesetage" value="Vue.set(vm.userProfile,'age',27)"></p>
+        <p><input type="button" @click="vm$setage" value="vm$set(vm.userProfile,'sex','男')"></p>
+        <p><input type="button" @click="addMulti" value="Object.assign()添加多个属性"></p>
+    </div>
+    <script>
+        var vm4 = new Vue({
+            el:"#vm4",
+            data() {
+                return {
+                    items:{
+                        item1:1,
+                    },
+                    userProfile:{
+                        name:"beginner",
+                    }
+                }
+            },
+            methods: {
+                vmItemsB:function(){
+                    vm4.items.b=2
+                },
+                Vueset:function(){
+                    Vue.set(vm4.items,'b',2)
+                },
+                Vuesetage:function(){
+                    Vue.set(vm4.userProfile,'age',27);
+                },
+                vm$setage:function(){
+                    vm4.$set(vm4.userProfile,'sex','男');
+                },
+                addMulti:function(){
+                    vm4.userProfile = Object.assign({},vm4.userProfile,{
+                        age2:2828,
+                        sex2:'男男',
+                    });
+                }
+            },
+        });
+    </script>
+
+
 
 </body>
 </html>
