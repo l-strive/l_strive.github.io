@@ -180,7 +180,161 @@
         });
     </script>
 
+    <strong>计算属性显示过滤/排序后的结果</strong>
+    <div class="box" id="vm5">
+        <ul class="cl">
+            <li v-for="value in computedNumbers">{{value}}</li>
+        </ul>
+        <i>计算属性，返回计算结果数组</i>
+        <i>计算属性，必须返回数组或者对象，循环中才可以对数组或者对象进行循环。仅修改data是无效的。因为输出的是计算属性的内容，计算属性相当于一个新data的存在。</i>
+        <ul class="cl">
+            <li v-for="value in computedNumbers2">{{value}}</li>
+        </ul>
+    </div>
+    <script>
+        var vm5 = new Vue({
+            el:"#vm5",
+            data() {
+                return {
+                    numbers:[1,2,3,4,5,6]
+                }
+            },
+            computed: {
+                computedNumbers:function(){
+                    return this.numbers.filter(function(num){
+                        return num%2 ===0
+                    });
+                },
+                computedNumbers2:function(){
+                    var numbers2=[];
+                    for(let num of this.numbers){
+                        numbers2.push(num*2)
+                    }
+                    return numbers2;
+                }
+            },
+        });
+    </script>
 
+    <strong>在v-for里使用值范围</strong>
+    <div class="box" id="vm6">
+        <span v-for="n in 10">{{n}}</span>
+    </div>
+    <script>
+        var vm6 = new Vue({
+            el:"#vm6",
+        });
+    </script>
+
+    <strong>在&lt;template&gt;上使用v-for</strong>
+    <div class="box" id="vm7">
+        <ul class="cl">
+            <template v-for="item in person">
+                <li>{{item.name}}</li>
+                <li :style="{color:'#f00'}">{{item.age}}</li>
+            </template>
+        </ul>
+        <ul class="cl">
+            <li v-for="item in person"><code>{{item.name}}</code><span>{{item.age}}</span></li>
+        </ul>
+    </div>
+    <script>
+        var vm7 = new Vue({
+            el:"#vm7",
+            data() {
+                return {
+                    person:[
+                        {name:'liu',age:'27'},
+                        {name:'liuliu',age:'2828'},
+                    ]
+                }
+            },
+        });
+    </script>
+
+    <strong>v-for与v-if一同使用</strong>
+    <div class="box" id="vm8">
+        <ul class="cl" v-if="showAll">
+            <li v-for="item in persons" v-if="item.show">{{item.name}}</li>
+        </ul>
+        <p><input type="button" @click="showName2" value="显示name2"></p>
+    </div>
+    <script>
+        var vm8 = new Vue({
+            el:"#vm8",
+            data() {
+                return {
+                    showAll:true,
+                    persons:[
+                        {show:true,name:'name1'},
+                        {show:false,name:'name2'},
+                        {show:true,name:'name3'},
+                        {show:true,name:'name4'},
+                        {show:true,name:'name5'},
+                        {show:true,name:'name6'},
+                        {show:true,name:'name7'},
+                    ]
+                }
+            },
+            methods: {
+                showName2:function(){
+                    vm8.$set(vm8.persons,1,{show:true,name:"name2--$set"});
+                }
+            },
+        });
+    </script>
+
+    <strong>在组件上使用v-for</strong>
+    <div class="box" id="vm9">
+        <ul class="cl">
+            <li is="liComponent" 
+                v-for="(item,index) in persons" 
+                :key="item.name" 
+                :title="item.name" 
+                @remove="persons.splice(index,1)" 
+                @remove2="remove22(index)" 
+                ></li>
+                
+        </ul>
+        <p>
+            <input type="text" v-model="newPerson">
+            <input type="button" @click="addNewPerson" value="add">
+        </p>
+        <i>组件的点击事件不能在html中触发，需要在html中通过v-on或@绑定自定义事件，然后在组件中@click="$emit(event)"触发自定义事件。</i>
+        <i>组件的事件，可以给方法传递参数如 remove(index)</i>
+    </div>
+    <script>
+        Vue.component('liComponent',{
+            template:'<li>\
+                        {{title}}--template输出\
+                        <input @click="$emit(\'remove\')" type="button" value="remove">\
+                        <input @click="$emit(\'remove2\')" type="button" value="remove2">\
+                    </li>',
+            props:['title']
+        });
+        var vm9 = new Vue({
+            el:"#vm9",
+            data() {
+                return {
+                    newPerson:'',
+                    persons:[
+                        {name:'name1'},
+                        {name:'name2'},
+                        {name:'name3'},
+                    ]
+                }
+            },
+            methods: {
+                addNewPerson:function(){
+                    vm9.persons.push({name:this.newPerson});
+                    this.newPerson='';
+                },
+                remove22:function(index){
+                    vm9.persons.splice(index,1);
+                }
+            },
+        });
+    </script>
 
 </body>
 </html>
