@@ -11,6 +11,104 @@
     <link rel="stylesheet" href="../css/common.css">
 </head>
 <body>
-    
+    <strong>事件处理方法</strong>
+    <div class="box" id="vm1">
+        <input type="button" value="Greet" @click="Greet">
+        <i>如果点击按钮触发，可以拿到点击的元素</i>
+        <i>如果通过vm.Greet()只会返回name</i>
+    </div>
+    <script>
+        var vm1 = new Vue({
+            el:'#vm1',
+            data() {
+                return {
+                    name:'name1'
+                }
+            },
+            methods: {
+                Greet:function(event){
+                    console.log(this.name);
+                    if(event){
+                        console.log(event.target.tagName);
+                    }
+                }
+            },
+        });
+    </script>
+
+    <strong>内联处理器中的方法</strong>
+    <div class="box" id="vm2">
+        <input type="button" value="Say Hello!" @click="say('Hello!');">
+        <i>click事件绑定内联语句，内联语句中可以调用方法。 @click="say('Hello!');"</i>
+        <i>内联语句中不能执行console.log('内联js');say('Hello!');</i>
+        <input type="button" value="传入$event" @click="say('Hello Word!',$event);">
+    </div>
+    <script>
+        var vm2 = new Vue({
+            el:'#vm2',
+            methods: {
+                say:function(message,event){
+                    console.log(message);
+                    if(event){
+                        console.log(event);
+                    }
+                }
+            }
+        });
+    </script>
+
+    <div class="tip">
+<pre>
+事件修饰符：
+&lt;a v-on:click.once="doThis"&gt;&lt;/a&gt;
+.stop
+.prevent
+.capture
+.self
+.once
+.passive
+
+按键修饰符:
+&lt;input v-on:keyup.enter="submit"&gt;
+按键码：
+&lt;input v-on:keyup.13="submit"&gt;
+按键码的别名：
+.enter
+.tab
+.delete (捕获“删除”和“退格”键)
+.esc
+.space
+.up
+.down
+.left
+.right
+
+你还可以通过全局 config.keyCodes 对象自定义按键修饰符别名：
+Vue.config.keyCodes.f1 = 112
+
+系统修饰键：
+&lt;!-- Alt + C --&gt;
+&lt;input @keyup.alt.67="clear"&gt;
+.ctrl
+.alt
+.shift
+.meta
+
+.exact 修饰符
+.exact 修饰符允许你控制由精确的系统修饰符组合触发的事件。
+&lt;!-- 即使 Alt 或 Shift 被一同按下时也会触发 --&gt;
+&lt;button @click.ctrl="onClick"&gt;A&lt;/button&gt;
+&lt;!-- 有且只有 Ctrl 被按下的时候才触发 --&gt;
+&lt;button @click.ctrl.exact="onCtrlClick"&gt;A&lt;/button&gt;
+&lt;!-- 没有任何系统修饰符被按下的时候才触发 --&gt;
+&lt;button @click.exact="onClick"&gt;A&lt;/button&gt;
+
+鼠标按钮修饰符
+.left
+.right
+.middle
+</pre>
+    </div>
+
 </body>
 </html>
