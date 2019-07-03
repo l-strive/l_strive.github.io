@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>callback-Apply-Call</title>
+    <link rel="stylesheet" href="../../public/static/css/reset_5.css">
+    <script src="../../public/static/js/rem.js"></script>
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div class="tip">
+        <pre>
+把使用this对象的函数作为回调函数(陷阱)
+（1）this的指向是在函数执行的时候确定的，在函数定义的时候是确定不了，实际上this的最终指向的是那个调用它的对象
+（2）调用执行函数时，“.”前面是什么，this就是什么。前面没有对象，就是window了。
+        </pre>
+    </div>
+    <script>
+        var data={
+            id:98393,
+            fullName:'no set',
+            setFullName:function(firstName,lastName){
+                this.fullName=firstName+lastName;
+            },
+            fullName2:'no set2',
+            setFullName2:function(firstName,lastName){
+                this.fullName2=firstName+lastName;
+            },
+            fullName3:'no set3',
+            setFullName3:function(firstName,lastName){
+                this.fullName3=firstName+lastName;
+            },
+        }
+        function inputData(firstName,lastName,callback){
+            callback(firstName,lastName);
+        }
+        inputData('L','JG',data.setFullName);
+        console.log(data.fullName);
+        console.log(window.fullName);
+        data.setFullName2('L','JG');
+        console.log(data.fullName2);
+        console.log(window.fullName2);
+
+        function inputData3(firstName,lastName,callback,callbackObj){
+            callback.apply(callbackObj,[firstName,lastName]);
+        }
+        inputData3('L','JG',data.setFullName3,data);
+        console.log(data.fullName3);
+        console.log(window.fullName3);
+
+        
+    </script>
+    <div class="tip">
+        <pre>
+使用Apply函数正确设置了this对象，我们现在正确的执行了callback并在clientData对象中正确设置了fullName属性
+
+        </pre>
+    </div>
+
+
+    <div class="tip">
+        <pre>
+使用Call和Apply函数来改变this指向
+
+我们可以使用Call或者Apply函数来解决上面你的问题。到目前为止，我们知道了每个Javascript中的函数都有两个方法:Call 和 Apply。这些方法被用来设置函数内部的this对象以及给此函数传递变量。
+这里我们演示Apply函数实现，Call函数类似。（call接收的第一个参数为被用来在函数内部当做this的对象，传递给函数的参数被挨个传递。Apply函数的第一个参数也是在函数内部作为this的对象，然而最后一个参数确是传递给函数的值的数组。）
+        </pre>
+    </div>
+
+
+    <script>
+        function fn(url, callback){
+            var httpRequest;　　　　//创建XHR
+            httpRequest = window.XMLHttpRequest ? new XMLHttpRequest() :　　　//针对IE进行功能性检测
+            　　　　window.ActiveXObject ? new ActiveXObject("Microsoft.XMLHTTP") : undefined;
+            
+            httpRequest.onreadystatechange = function(){
+                if(httpRequest.readystate === 4 && httpRequest.status === 200){　　//状态判断
+                    callback.call(httpRequest.responseXML); 
+                }
+            };
+            httpRequest.open("GET", url);
+            httpRequest.send();
+        }
+        
+        fn("text.xml", function(){　　　　      //调用函数
+            console.log(this); 　　             //此语句后输出
+        });
+        
+        console.log("this will run before the above callback.");　　//此语句先输出
+    </script>
+</body>
+</html>
