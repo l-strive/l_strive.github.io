@@ -144,6 +144,55 @@
                 }
             },
         });
-    </script>
+	</script>
+	
+	<strong>通过插槽分发内容</strong>
+	<div class="box" id="vm4">
+		<my-com1>插入内容1</my-com1>
+	</div>
+	<script>
+		Vue.component('my-com1',{
+			template:'<div class="my-com1-class">\
+				<strong>插入内容：</strong>\
+				<slot></slot>\
+			</div>'
+		});
+		var vm4 = new Vue({
+			el:'#vm4'
+		});
+	</script>
+
+	<strong>动态组件-tab切换</strong>
+	<div class="box" id="vm5">
+		<ul>
+			<li v-for="tab in tabs" v-on:click="currentTab=tab">{{tab}}</li>
+		</ul>
+		<component :is="componentId"></component>
+	</div>
+	<script>
+		Vue.component('tab-home',{
+			template:'<div>Home component</div>',
+		});
+		Vue.component('tab-posts',{
+			template:'<div>Posts component</div>',
+		});
+		Vue.component('tab-archive',{
+			template:'<div>Archive component</div>',
+		});
+		var vm5 = new Vue({
+			el:'#vm5',
+			data() {
+				return {
+					currentTab:'Home',
+					tabs:['Home','Posts','Archive']
+				}
+			},
+			computed: {
+				componentId:function(){
+					return 'tab-'+this.currentTab.toLowerCase();
+				}
+			},
+		});
+	</script>
 </body>
 </html>
