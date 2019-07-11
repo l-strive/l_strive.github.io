@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>jquery ajax</title>
+	<script src="../lib/jquery.js"></script>
+</head>
+<body>
+	<input type="text" id="input_1">
+	<script>
+		$('#input_1').on('blur',function(){
+			var _value=$(this).val();
+			var _return=test(_value);
+			console.log(_return);
+		});
+		function test(_str){
+			var _return;
+			if(_str.length<5){
+				_return='长度不能小于5';
+			}else{
+				$.ajax({
+					type: "get",
+					url: "../js/data/ajax-data1.json",
+					dataType: "json",
+					async:false,
+					success: function (response) {
+						console.log(response);
+						if(_str==response.pass){
+							_return='与原密码相同'
+						}else{
+							_return='密码可用'
+						}
+					}
+				});
+			}
+			console.log(_return);
+			return _return;
+		}
+	</script>
+</body>
+</html>
