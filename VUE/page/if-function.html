@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<script src="../lib/jquery.js"></script>
+</head>
+<body>
+	<script>
+		if(ceshi('123456')){
+			console.log('一样');
+		}else{
+			console.log('不一样');
+		}
+
+		function ceshi(str){
+			var _return=false;
+			$.ajax({
+				type: "get",
+				url: "../js/data/ajax-data1.json",
+				dataType: "json",
+				async:false,
+				success: function (response) {
+					if(response.pass==str){
+						_return=true;
+					}
+				}
+			});
+			return _return;
+		}
+	</script>
+</body>
+</html>
