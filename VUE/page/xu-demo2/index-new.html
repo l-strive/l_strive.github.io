@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        div,dl,dt,dd{ padding:0; margin: 0;}
+		#b_biaodan{ padding:10px;}
+		#b_biaodan dl{ display: flex; padding:10px;}
+		#b_biaodan dt{ width: 5rem;}
+		#b_biaodan dd{ flex: 1;}
+		#b_biaodan input[type='text']{ height: 25px; line-height: 25px; width: 25%;}
+		#b_biaodan textarea{ width: 95%; height: 75px; line-height: 25px;}
+
+		#b_biaodan input[type='button']{ height: 30px; line-height: 30px; width: 80px; background: #ff6600; border: 0; border-radius: 5px; color: #fff; font-size:14px;}
+		#b_biaodan .info{ padding:10px; margin:10px; background: #f1f1f1;width: 550px; border-radius: 10px; line-height: 30px;}
+    </style>
+</head>
+<body>
+    <div id="b_biaodan">
+        <div class="bd_1">
+            <dl>
+                <dt>功能测试</dt>
+                <dd>
+                    <select name="" class="ProductKey" >
+                        <option value="a16EKLeucOn">馈线终端0729</option>
+                        <option value="a1R1stsmozC">断路器0729</option>
+                        <option value="a1XQaRlaP0t">电表0729</option>
+                    </select>
+                </dd>
+            </dl>
+            <dl class="show_a16EKLeucOn">
+                <dt>t</dt>
+                <dd>
+                    <label><input type="radio" name="radio_t" value="0" checked>关</label>
+                    <label><input type="radio" name="radio_t" value="1">开</label>
+                </dd>
+            </dl>
+            
+            <dl class="show_a1R1stsmozC" style="display: none;">
+                <dt>分</dt>
+                <dd>
+                    <label><input type="radio" name="radio_fen" value="0" checked>关</label>
+                    <label><input type="radio" name="radio_fen" value="1">开</label>
+                </dd>
+            </dl>
+            <dl class="show_a1R1stsmozC" style="display: none;">
+                <dt>合</dt>
+                <dd>
+                    <label><input type="radio" name="radio_he" value="0" checked>关</label>
+                    <label><input type="radio" name="radio_he" value="1">开</label>
+                </dd>
+            </dl>
+
+            
+            <div class="show_a1XQaRlaP0t" style="display: none;">
+                <dl>
+                    <dt></dt>
+                    <dd>
+                        <label><input type="radio" name="radio_dianbiao" value="MeasureCommand" checked>召测</label>
+                        <label><input type="radio" name="radio_dianbiao" value="TransCommand">透传</label>
+                    </dd>
+                </dl>
+                <dl class="show_MeasureCommand">
+                    <dt></dt>
+                    <dd>
+                        <label><input type="radio" name="radio_MeasureCommand" value="1" checked>15分钟</label>
+                        <label><input type="radio" name="radio_MeasureCommand" value="2">日冻结</label>
+                        <label><input type="radio" name="radio_MeasureCommand" value="3">月冻结</label>
+                    </dd>
+                </dl>
+                <dl class="show_TransCommand" style="display: none;">
+                    <dt></dt>
+                    <dd>
+                        <textarea name="textarea_TransCommand"></textarea>
+                    </dd>
+                </dl>
+            </div>
+
+            
+        </div>
+        <dl><dt></dt><dd><input id="btn_save" type="button" value="保存"></dd></dl>
+    </div>
+
+    <script src="js/jquery.js"></script>
+    <script>
+    
+    // 功能测试改变事件
+    
+        $(function(){
+            var _ProductKey="a16EKLeucOn";//产品名称
+            var _aDeviceName={
+                "a16EKLeucOn":"kuixianzhongduan0729",
+                "a1R1stsmozC":"duanluqi0729",
+                "a1XQaRlaP0t":"dianbiao0729"
+            }
+            var _DeviceName=_aDeviceName[_ProductKey];
+            $('.ProductKey').change(function(){
+                _ProductKey=$('#b_biaodan .ProductKey').val();
+                _DeviceName=_aDeviceName[_ProductKey];
+
+                $('.show_a16EKLeucOn').hide();
+                $('.show_a1R1stsmozC').hide();
+                $('.show_a1XQaRlaP0t').hide();
+
+
+                if(_ProductKey=='a16EKLeucOn'){
+                    $('.show_a16EKLeucOn').show();
+                }else if(_ProductKey=='a1R1stsmozC'){
+                    $('.show_a1R1stsmozC').show();
+                }else if(_ProductKey=='a1XQaRlaP0t'){
+                    $('.show_a1XQaRlaP0t').show();
+                }
+            });
+            $('input[name="radio_dianbiao"]').click(function(){
+                var _value=$('input[name="radio_dianbiao"]:checked').val();
+                $('.show_MeasureCommand').hide();
+                $('.show_TransCommand').hide();
+                if(_value=='MeasureCommand'){
+                    $('.show_MeasureCommand').show();
+                }else{
+                    $('.show_TransCommand').show();
+                }
+            });
+            
+            
+            
+            $('#btn_save').click(function(){
+                var _oLin={};
+                _oLin.ProductKey=_ProductKey;
+                _oLin.DeviceName=_DeviceName;
+                _oLin.Items={};
+                if(_ProductKey=='a16EKLeucOn'){
+                    _oLin.Items.t=$('input[name="radio_t"]:checked').val();
+                }else if(_ProductKey=='a1R1stsmozC'){
+                    _oLin.Items.fen=$('input[name="radio_fen"]:checked').val();
+                    _oLin.Items.he=$('input[name="radio_he"]:checked').val();
+                }else if(_ProductKey=='a1XQaRlaP0t'){
+                    if($('input[name="radio_dianbiao"]:checked').val()=='MeasureCommand'){
+                        _oLin.Items.MeasureCommand=$('input[name="radio_MeasureCommand"]:checked').val();
+                    }else{
+                        _oLin.Items=$('textarea[name="textarea_TransCommand"]').val();
+                    }
+                }
+                console.log(_oLin);
+                // $.ajax({
+                //     type : "POST",
+                //     url: 'setDeviceProperty',
+                //     data: _oLin,
+                //     dataType: "json",
+                //     success: function (response) {
+                //     },
+                //     error: function(data) {
+                //         alert("请求异常")
+                //     }
+                // })
+            });
+        });
+        
+        
+    
+        
+        
+        
+    </script>
+</body>
+</html>
