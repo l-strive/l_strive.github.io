@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>jquery ajax</title>
+	<script src="../lib/jquery.js"></script>
+	<style>
+	html,body{ width:100%; height: 100%; padding:0; margin: 0;}
+	div{ padding:0; margin: 0;}
+	</style>
+</head>
+<body>
+	<div id="wrap" style="height: 200px; background:#ccc; overflow-y: scroll;">
+		<div style="height: 500px;"></div>
+	</div>
+	<script>
+	console.log('【OK】jquery DIV元素滚动到底部');
+	$('#wrap').scroll(function(){
+		var viewH =$(this).height();//可见高度
+		var contentH =$(this).prop('scrollHeight');//内容高度
+		var scrollTop =$(this).scrollTop();//滚动高度
+		if(scrollTop + viewH >= contentH) {
+			console.log('viewH',viewH);
+			console.log('contentH',contentH);
+			console.log('scrollTop',scrollTop);
+			console.log('jquery DIV元素滚动到底部');
+		}
+	});
+	</script>
+	
+
+	<div style="height: 1000px;"></div>
+	<script>
+	console.log('【OK】jquery滚动到底部');
+	$(window).scroll(function(){
+		var viewH =$(this).height();//可见高度
+		var contentH =$(document).height();//页面高度
+		var scrollTop =$(this).scrollTop();//滚动高度
+		if(scrollTop + viewH >= contentH) {
+			console.log('viewH',viewH)
+			console.log('contentH',contentH)
+			console.log('scrollTop',scrollTop)
+			console.log('jquery滚动到底部')
+		}
+	})
+	</script>
+
+	<script>
+	console.log('【OK】原生滚动到底部');
+	window.addEventListener('scroll',function(){
+		var scrollTop=document.documentElement.scrollTop||window.pageYOffset||document.body.scrollTop;
+		if(document.documentElement.scrollHeight==document.documentElement.clientHeight+scrollTop){
+			console.log(scrollTop);
+			console.log('原生滚动到底部');
+		}
+	})
+	</script>
+	
+
+</body>
+</html>

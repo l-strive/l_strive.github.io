@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>组件基础</title>
+    <link rel="stylesheet" href="../../public/static/css/reset_5.css">
+    <script src="../../public/static/js/rem.js"></script>
+    <script src="../lib/vue.js"></script>
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <strong>组件及组件复用</strong>
+    <div class="box" id="vm1">
+        <add-number></add-number>
+        <add-number></add-number>
+        <add-number></add-number>
+        <i>组件是可复用的Vue实例，且带有一个名字，可以在Vue根实例中，把这个组件作为自定义元素来使用。</i>
+        <i>因为组件是可复用的Vue实例，所以它们与new Vue接收相同的选项，如：data、computed、watch、methods以及生命周期钩子等。el例外。</i>
+        <i>组件的data选项必须是一个函数，</i>
+    </div>
+    <script>
+        Vue.component('add-number',{
+            data() {
+                return {
+                    count:0
+                }
+            },
+            template:'<button @click="count++">Add Number:{{count}}</button>'
+        })
+        var vm1 = new Vue({
+            el:'#vm1',
+        });
+    </script>
+
+    <strong>组件的组织</strong>
+    <div class="tip">
+        <pre>
+两种组件的注册类型：全局注册和局部注册。
+通过 Vue.component 全局注册
+全局注册的组件可以用在其被注册之后的任何 (通过 new Vue) 新创建的 Vue 根实例，也包括其组件树中的所有子组件的模板中。
+        </pre>
+    </div>
+
+    <strong>通过Prop向子组件传递数据</strong>
+    <div class="box" id="vm2">
+        <ul>
+            <blog-list
+                v-for="post in posts"
+                v-bind:key="post.id"
+                v-bind:id="post.id"
+                v-bind:title="post.title"
+            ></blog-list>
+        </ul>
+        <i>每个组件必须只有一个根元素</i>
+        <ul>
+            <blog-list2
+                v-for="post in posts"
+                v-bind:key="post.id"
+                v-bind:post="post"
+            ></blog-list2>
+        </ul>
+        <i>数据比较多的时候，可以将对象直接传递给组件</i>
+        <ul :style="{fontSize:postFontSize+'rem'}">
+            <blog-list3
+                v-for="post in posts"
+                v-bind:key="post.id"
+                v-bind:post="post"
+                v-on:event-zdy1="postFontSize+=0.1"
+            ></blog-list3>
+        </ul>
+        <i>监听子组件事件</i>
+        <i>在使用子组件时，给子组件绑定自定义事件和方法，v-on:eventzdy1="方法或语句"</i>
+        <i>在组件定义中通过$emit调用自定义事件，v-on:click="$emit('eventzdy1')"</i>
+        <ul :style="{fontSize:postFontSize2+'rem'}">
+            <blog-list4
+                v-for="post in posts"
+                v-bind:key="post.id"
+                v-bind:post="post"
+                v-on:event-zdy1="postFontSize2+=$event"
+            ></blog-list3>
+        </ul>
+        <i>通过$event接收$emit传递过来的值</i>
+        <i>如果自定义事件绑定的是一个方法，那么这个值默认传递给方法的第一个传参</i>
+    </div>
+    <script>
+        Vue.component('blog-list',{
+            props:['id','title'],
+            template:'<li>{{id}}-{{title}}</li>'
+        });
+        Vue.component('blog-list2',{
+            props:['post'],
+            template:'<li>{{post.id}}-{{post.title}}</li>'
+        });
+        Vue.component('blog-list3',{
+            props:['post'],
+            template:'<li>\
+                {{post.id}}-{{post.title}}\
+                <button v-on:click="$emit(\'event-zdy1\')">变大</button>\
+                </li>'
+        });
+        Vue.component('blog-list4',{
+            props:['post'],
+            template:'<li>\
+                {{post.id}}-{{post.title}}\
+                <button v-on:click="$emit(\'event-zdy1\',0.2)">变大</button>\
+                </li>'
+        });
+        var vm2 = new Vue({
+            el:'#vm2',
+            data() {
+                return {
+                    posts:[
+                        {id:1,title:'title1'},
+                        {id:2,title:'title2'},
+                        {id:3,title:'title3'}
+                    ],
+                    postFontSize:0.2,
+                    postFontSize2:0.2,
+                }
+            },
+        });
+    </script>
+
+    <strong>在组件上使用 v-model</strong>
+    <div class="box" id="vm3">
+        <p>搜索内容为：{{searchText}}</p>
+        <custom-input v-model="searchText"></custom-input>
+    </div>
+    <script>
+        Vue.component('custom-input',{
+            props:['value'],
+            template:'<input\
+                v-bind:value="value"\
+                v-on:input="$emit(\'input\',$event.target.value)"\
+            >'
+        });
+        var vm3 = new Vue({
+            el:'#vm3',
+            data() {
+                return {
+                    searchText:''
+                }
+            },
+        });
+	</script>
+	
+	<strong>通过插槽分发内容</strong>
+	<div class="box" id="vm4">
+		<my-com1>插入内容1</my-com1>
+	</div>
+	<script>
+		Vue.component('my-com1',{
+			template:'<div class="my-com1-class">\
+				<strong>插入内容：</strong>\
+				<slot></slot>\
+			</div>'
+		});
+		var vm4 = new Vue({
+			el:'#vm4'
+		});
+	</script>
+
+	<strong>动态组件-tab切换</strong>
+	<div class="box" id="vm5">
+		<ul>
+			<li v-for="tab in tabs" v-on:click="currentTab=tab">{{tab}}</li>
+		</ul>
+		<component :is="componentId"></component>
+	</div>
+	<script>
+		Vue.component('tab-home',{
+			template:'<div>Home component</div>',
+		});
+		Vue.component('tab-posts',{
+			template:'<div>Posts component</div>',
+		});
+		Vue.component('tab-archive',{
+			template:'<div>Archive component</div>',
+		});
+		var vm5 = new Vue({
+			el:'#vm5',
+			data() {
+				return {
+					currentTab:'Home',
+					tabs:['Home','Posts','Archive']
+				}
+			},
+			computed: {
+				componentId:function(){
+					return 'tab-'+this.currentTab.toLowerCase();
+				}
+			},
+		});
+	</script>
+</body>
+</html>
