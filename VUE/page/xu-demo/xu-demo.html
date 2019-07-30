@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<style>
+		div,dl,dt,dd{ padding:0; margin: 0;}
+		#b_biaodan{ padding:10px;}
+		#b_biaodan dl{ display: flex; padding:10px;}
+		#b_biaodan dt{ width: 5rem; line-height: 27px;}
+		#b_biaodan dd{ flex: 1;}
+		#b_biaodan input[type='text']{ height: 25px; line-height: 25px; width: 95%;}
+		#b_biaodan textarea{ width: 95%; height: 75px; line-height: 25px;}
+		#b_biaodan input[type='button']{ height: 30px; line-height: 30px; width: 80px; background: #ff6600; border: 0; border-radius: 5px; color: #fff; font-size:14px;}
+		#b_biaodan .info{ padding:10px; margin:10px; background: #f1f1f1; border-radius: 10px; line-height: 30px;}
+	</style>
+</head>
+<body>
+	<div id="b_biaodan">
+		<div class="bd_1">
+			<dl><dt>产品KEY</dt><dd><input class="key" type="text"></dd></dl>
+			<dl><dt>设备名称</dt><dd><input class="name" type="text"></dd></dl>
+			<dl><dt>属性信息</dt><dd><textarea class="sx"></textarea></dd></dl>
+		</div>
+		<dl><dt></dt><dd><input id="btn_save" type="button" value="保存"></dd></dl>
+		<div class="info">
+		</div>
+	</div>
+
+	<script src="js/jquery.js"></script>
+	<script>
+		$(function(){
+
+			$('#btn_save').click(function(){
+				var data=[];
+				var _oLin={};
+				_oLin.key=$('#b_biaodan .bd_1 .key').val();
+				_oLin.name=$('#b_biaodan .bd_1 .name').val();
+				_oLin.sx=$('#b_biaodan .bd_1 .sx').val();
+				data.push(_oLin);
+				console.log(data);
+				$('#b_biaodan .bd_1 .key').val('');
+				$('#b_biaodan .bd_1 .name').val('');
+				$('#b_biaodan .bd_1 .sx').val('');
+
+				$('#b_biaodan .info').prepend('<div>'+_oLin.name+'设置属性成功</div>')
+
+				// $.ajax({
+				// 	type: "post",
+				// 	url: "url",
+				// 	data: data,
+				// 	dataType: "json",
+				// 	success: function (response) {
+				// 		$('#b_biaodan .info').prepend('<div>'+_oLin.name+'设置属性成功</div>')
+				// 	}
+				// });
+			});
+		});
+	</script>
+</body>
+</html>
