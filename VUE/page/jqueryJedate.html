@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+</head>
+<body>
+	<input type="text" class="jedate">
+	<link rel="stylesheet" href="../lib/jedate/jedate.css">
+	<script src="../lib/jquery.min.js"></script>
+	<script src="../lib/jedate/jquery.jedate.min.js"></script>
+	<script>
+		$(".jedate").jeDate({
+            format:"YYYY-MM-DD hh:mm:ss",
+            isTime:true, 
+            minDate:"2014-09-19 00:00:00"
+        })
+	</script>
+</body>
+</html>
