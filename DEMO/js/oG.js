@@ -206,7 +206,7 @@ var oG={
     },
     extends: function() {
 		/**
-		 * 
+		 * 格式化日期
 		 * new Date().format('yyyy-MM-dd hh:mm:ss:S 星期w 第q季度')
 		 */
 		Date.prototype.format = function(format) { //"yyyy-MM-dd hh:mm:ss"
@@ -267,5 +267,3 @@ var oG={
     
 }
 oG.init();
-
-
