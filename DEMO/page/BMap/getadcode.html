@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+</head>
+<body>
+	<script src="../../lib/jquery.js"></script>
+	<script src="http://api.map.baidu.com/api?v=2.0&ak=6lE4uprkcyrz3u0QUMl3RGH7KSUK9XwD" type="text/javascript"></script>
+	<script>
+		/*
+		var point = new BMap.Point(114.047453,22.547161);
+		*/
+		var geolocation = new BMap.Geolocation();
+        geolocation.getCurrentPosition(function(r){
+            if(this.getStatus() == BMAP_STATUS_SUCCESS){
+				console.log(r.point);
+
+				var myGeo = new BMap.Geocoder();
+			   	// 根据坐标得到地址描述
+			    myGeo.getLocation(r.point,  function(result){
+				    if (result){ 
+				    	console.log(result);
+				    } 
+			    });
+
+				var latitude=r.point.lat;
+				var longitude=r.point.lng;
+				$.ajax({
+					url:'http://api.map.baidu.com/geocoder/v2/?ak=6lE4uprkcyrz3u0QUMl3RGH7KSUK9XwD&location=' + latitude + ',' + longitude + '&output=json&pois=1',
+					dataType: 'jsonp',
+					callback: 'BMap._rd._cbk43398',
+					success: function(res) {
+						console.log(res);
+						var result = res.result,
+						addressComponent = result.addressComponent,
+						adcode = addressComponent.adcode
+						console.log('城市号码为'+ adcode);
+					}
+				});
+
+
+            }else{
+                console.log('定位失败');
+            }
+        });
+
+
+		
+	</script>
+</body>
+</html>
