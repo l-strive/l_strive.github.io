@@ -1,4 +1,4 @@
-/**
+﻿/**
  * author:Beginner
  * email:BeginnerMind@163.com
  * update:20190805
@@ -235,8 +235,8 @@ var oG={
 		String.prototype.replaceAll = function(s1, s2) {
 			return this.replace(new RegExp(s1, "gm"), s2);
 		}
-		// 返回字符串的实际长度, 一个汉字算2个长度   
-		String.prototype.strlen = function () {  
+		// 返回字符串的实际长度, 一个汉字算2个长度
+		String.prototype.strlen = function () {
 			return this.replace(/[^\x00-\xff]/g, "**").length;
 		}
 		//字符串去空格
