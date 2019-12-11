@@ -11,3 +11,5 @@ index.html 自定义文件   目前是自动跳转到dist目录
 public  vue页面及静态资源
 src     VUE-CL开发目录
 VUE     script引入vue，学习vue基础。
+dist    打包生成文件目录
+DEMO    demo制作存放目录
